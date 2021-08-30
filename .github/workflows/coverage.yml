@@ -45,5 +45,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: '👋 Hola!',
-              coverage: needs.test_coverage.outputs.cov_data
+              coverage: ${{ fromJSON(needs.test_coverage.outputs.cov_data).lines-valid }},
             })
