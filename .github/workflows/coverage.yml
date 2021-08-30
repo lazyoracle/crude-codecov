@@ -34,14 +34,14 @@ jobs:
         echo "::set-output name=cov_data::$cov_data"
 
   comment:
-    needs: test_coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v4
         with:
           script: |
             github.issues.createComment({
-              Total: ${{ fromJSON(needs.test_coverage.outputs.cov_data).lines-valid }},
-              Covered: ${{ fromJSON(needs.test_coverage.outputs.cov_data).lines-covered }},
-              Fraction: ${{ fromJSON(needs.test_coverage.outputs.cov_data).line-rate }},
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Hola!'
             })
