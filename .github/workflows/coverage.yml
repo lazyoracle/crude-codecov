@@ -1,0 +1,47 @@
+name: Test Coverage
+
+on:
+  pull_request:
+    branches: [ master, 'release/*' ]
+  workflow_dispatch:
+
+jobs:
+  test_coverage:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        python-version: [3.8]
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: ${{ matrix.python-version }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Test with pytest
+      run: |
+        pip install --upgrade pip
+        pip install pytest-cov
+        pytest -v --cov=c3_qccs tests/
+    - name: Get coverage data
+      id: get_cov_data
+      run: |
+        python .github/parse_coverage.py
+        cov_data=`cat coverage_data.json`
+        echo "::set-output name=cov_data::$cov_data"
+
+  comment:
+    needs: test_coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              Total: ${{ fromJSON(needs.test_coverage.outputs.cov_data).lines-valid }},
+              Covered: ${{ fromJSON(needs.test_coverage.outputs.cov_data).lines-covered }},
+              Fraction: ${{ fromJSON(needs.test_coverage.outputs.cov_data).line-rate }},
+            })
