@@ -34,6 +34,7 @@ jobs:
         echo "::set-output name=cov_data::$cov_data"
 
   comment:
+    needs: test_coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v4
