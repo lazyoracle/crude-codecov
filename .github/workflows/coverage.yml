@@ -3,11 +3,16 @@ name: Test Coverage
 on:
   pull_request:
     branches: [ master, 'release/*' ]
+  issue_comment:
+    types: [created]
   workflow_dispatch:
 
 jobs:
   test_coverage:
     runs-on: ${{ matrix.os }}
+    if: ${{ github.event.comment &&
+          github.event.issue.pull_request &&
+          startsWith(github.event.comment.body, '/coverage') }}
     strategy:
       matrix:
         os: [ubuntu-20.04]
