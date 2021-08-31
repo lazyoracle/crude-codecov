@@ -1,10 +1,10 @@
 name: Test Coverage
 
 on:
+  push:
+    branches: [ master, dev, 'release/*' ]
   pull_request:
-    branches: [ master, 'release/*' ]
-  issue_comment:
-    types: [created]
+    branches: [ master, dev, 'release/*' ]
   workflow_dispatch:
 
 jobs:
