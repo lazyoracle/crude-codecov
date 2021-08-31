@@ -40,6 +40,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 Hola!',
-              coverage: ${{ fromJSON(steps.get_cov_data.outputs.cov_data).lines-valid }},
+              body: `Total: ${{ fromJSON(steps.get_cov_data.outputs.cov_data).lines-valid }},
+              Covered: ${{ fromJSON(steps.get_cov_data.outputs.cov_data).lines-covered }},
+              Fraction: ${{ fromJSON(steps.get_cov_data.outputs.cov_data).line-rate }}`,
             })
