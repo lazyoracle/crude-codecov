@@ -38,6 +38,7 @@ jobs:
         cov_data=`cat coverage_data.json`
         echo "::set-output name=cov_data::$cov_data"
     - name: Comment Coverage on PR
+      if: ${{ github.event_name == 'pull_request' }}
       uses: thollander/actions-comment-pull-request@main
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
