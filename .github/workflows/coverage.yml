@@ -37,7 +37,7 @@ jobs:
     needs: test_coverage
     runs-on: ubuntu-latest
     env:
-      total : ${{ fromJSON(needs.test_coverage.outputs.cov_data).lines-valid }}
+      total : ${{fromJSON(needs.test_coverage.outputs.cov_data)}}
     steps:
       - uses: actions/github-script@v4
         with:
