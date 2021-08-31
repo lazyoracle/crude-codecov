@@ -10,9 +10,6 @@ on:
 jobs:
   test_coverage:
     runs-on: ${{ matrix.os }}
-    if: ${{ github.event.comment &&
-          github.event.issue.pull_request &&
-          startsWith(github.event.comment.body, '/coverage') }}
     strategy:
       matrix:
         os: [ubuntu-20.04]
