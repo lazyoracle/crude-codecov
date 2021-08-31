@@ -32,13 +32,7 @@ jobs:
         python .github/parse_coverage.py
         cov_data=`cat coverage_data.json`
         echo "::set-output name=cov_data::$cov_data"
-
-  comment:
-    needs: test_coverage
-    runs-on: ubuntu-latest
-    env:
-      total : ${{fromJSON(needs.test_coverage.outputs.cov_data)}}
-    steps:
+    - name: Comment
       - uses: actions/github-script@v4
         with:
           script: |
@@ -47,5 +41,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: '👋 Hola!',
-              coverage: ${{ fromJSON(env.total) }},
+              coverage: ${{ fromJSON(steps.get_cov_data.outputs.cov_data).lines-valid }},
             })
