@@ -36,6 +36,8 @@ jobs:
   comment:
     needs: test_coverage
     runs-on: ubuntu-latest
+    env:
+      total : ${{ fromJSON(needs.test_coverage.outputs.cov_data).lines-valid }}
     steps:
       - uses: actions/github-script@v4
         with:
@@ -45,5 +47,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: '👋 Hola!',
-              coverage: ${{ fromJSON(needs.test_coverage.outputs.cov_data).lines-valid }},
+              coverage: ${{ fromJSON(env.total) }},
             })
