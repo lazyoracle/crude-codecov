@@ -33,7 +33,7 @@ jobs:
         cov_data=`cat coverage_data.json`
         echo "::set-output name=cov_data::$cov_data"
     - name: Comment Coverage on PR
-      uses: thollander/actions-comment-pull-request@master
+      uses: thollander/actions-comment-pull-request@main
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         message: 'Total: ${{ fromJSON(steps.get_cov_data.outputs.cov_data).lines-valid }},
